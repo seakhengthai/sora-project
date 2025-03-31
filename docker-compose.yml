@@ -1,27 +1,29 @@
 version: '3.8'
-
 services:
   gateway-service:
-    build: ./gateway-service
+    build: ./gateway
     container_name: gateway-service
     ports:
       - "9090:9090"
     depends_on:
       - user-profile-service
       - payment-service
-
+    networks:
+      - app-network
   user-profile-service:
-    build: ./user-profile-service
+    build: ./user-profile
     container_name: user-profile-service
     ports:
       - "9091:9091"
-
+    networks:
+      - app-network
   payment-service:
     build: ./payment-service
     container_name: payment-service
     ports:
       - "9092:9092"
-
+    networks:
+      - app-network
   postgres:
     image: postgres:latest
     environment:
@@ -29,4 +31,9 @@ services:
       POSTGRES_PASSWORD: demo
       POSTGRES_DB: demo
     ports:
-      - "5432:5432"
+      - "5433:5432"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
