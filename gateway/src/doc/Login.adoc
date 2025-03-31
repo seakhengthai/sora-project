@@ -1,0 +1,286 @@
+= OAuth API Specification
+:toc: left
+:toclevels: 3
+:sectnums:
+:imagesdir: images
+
+== Overview
+
+This document describes the OAuth authentication API for obtaining access tokens.
+
+== Base URL
+
+`http://localhost:9090/api/v1.0`
+
+== Authentication
+
+The API requires the following authentication headers:
+
+[cols="1,3,1"]
+|===
+|Header |Description |Required
+
+|`client_id`
+|Client identifier
+|Yes
+
+|`client_secret`
+|Client secret
+|Yes
+
+|`x-api-key`
+|API key
+|Yes
+
+|`device_id`
+|Device identifier
+|Yes
+|===
+
+== Endpoints
+
+=== Get Access Token
+
+Retrieves an access token for authentication.
+
+==== Request
+
+[source]
+----
+POST /oauth/token
+----
+
+===== Headers
+
+[cols="1,3,1"]
+|===
+|Header |Description |Required
+
+|`content-type`
+|Content type of the request body
+|Yes
+
+|`client_id`
+|Client identifier
+|Yes
+
+|`client_secret`
+|Client secret
+|Yes
+
+|`x-api-key`
+|API key
+|Yes
+
+|`device_id`
+|Device identifier
+|Yes
+
+|`client_req_timestamp`
+|Request timestamp in ISO 8601 format
+|Yes
+
+|`app_version`
+|Application version
+|Yes
+
+|`device_info`
+|Device information in JSON format
+|Yes
+|===
+
+===== Request Body
+
+[source,json]
+----
+{
+    "grant_type": "password",
+    "username": "85512121212",
+    "password": "HaytI3OydBDl5gFofb7fNJL/KdzxnroelfsrFach3q8Tf7EMQFUvgp+hMji9asfcbsmlSDv9I3jlzkFGQhlD6zeJWGVxhn7OoOh+EbHWf7AsNS9smAPqmXBm4zUYgpizTCrwCnhW734ST0o2lz92DySTeoruhYc+QZpCiLw8CU30CuZhd9dcGrQFAobp/S/OZZEd9lNMint7h/9ZnSNFEaxc103xqJezo2xn2IjkFtGr+PRsgYe9ejSk5qSu1PFvLYszm5rosR6qWmmNyweNJlu5Bdvtp0nUnoZFpXSXUNwCC8l6KfABFHmZe6TVEWuFw1TrR9/iY/9cl0khKwxD0mxdcelFbS2sewQvXBTXDhYKQ1dxYxQqxmcxOxW6MrajQXdNfnx4TQp/tAQHsYxauOWUtW4a83WoXND0rd99YopqPJsorSmGlwa4LBoiIz0vYrviM6LIruXaUVQh4MpdA7fIeqHPpiHRHOG5EqsQzqMgRecLkzSOzcx3mkNFWPwRbgPe3ZzIQCS2xE/YWlvItB8N7HTGEUehuJa7p/7qwPmyuE0euhLWO5juHrC+jPR9GRiTpCGUkYg/K1tA7XPjqbu6lLGUmSbj+LbPrkKmohpJpvujCdgxUOJH7qx4pa9mpNvXCvJfpPYPPOpDcayIxhViEUAbKmZRn0WoMpIDCJ8="
+}
+----
+
+===== Request Parameters
+
+[cols="1,3,1,1"]
+|===
+|Parameter |Description |Type |Required
+
+|`grant_type`
+|Type of grant requested
+|String
+|Yes
+
+|`username`
+|User identifier (e.g., phone number)
+|String
+|Yes
+
+|`password`
+|RSA Encrypted password
+|String
+|Yes
+|===
+
+==== Response
+
+===== Success Response
+
+* *Status Code*: `200 OK`
+
+[source,json]
+----
+{
+  "code": "S0001",
+  "message": "Success.",
+  "title": null,
+  "data": {
+    "type": "Bearer",
+    "profile": {
+      "cif": "000000001",
+      "full_name": "Kok Dara",
+      "mobile_number": "85512121212",
+      "gender": "Male",
+      "dob": "1992-07-29T17:00:00.000+00:00",
+      "profile_id": null,
+      "address": "999 Pine St, FL"
+    },
+    "access_token": "access_token",
+    "refresh_token": "refresh_token",
+    "last_login_date": "2025-03-31T07:46:06.657+00:00"
+  },
+  "message_kh": null
+}
+----
+
+===== Response Fields
+
+[cols="1,3,1"]
+|===
+|Field |Description |Type
+
+|`code`
+|Response code
+|String
+
+|`message`
+|Response message
+|String
+
+|`title`
+|Response title (if applicable)
+|String
+
+|`data`
+|Response data object
+|Object
+
+|`data.type`
+|Token type
+|String
+
+|`data.profile`
+|User profile information
+|Object
+
+|`data.profile.cif`
+|Customer identification number
+|String
+
+|`data.profile.full_name`
+|User's full name
+|String
+
+|`data.profile.mobile_number`
+|User's mobile number
+|String
+
+|`data.profile.gender`
+|User's gender
+|String
+
+|`data.profile.dob`
+|User's date of birth
+|String (ISO 8601)
+
+|`data.profile.profile_id`
+|Profile identifier
+|String
+
+|`data.profile.address`
+|User's address
+|String
+
+|`data.access_token`
+|JWT access token
+|String
+
+|`data.refresh_token`
+|JWT refresh token
+|String
+
+|`data.last_login_date`
+|Last login date and time
+|String (ISO 8601)
+
+|`message_kh`
+|Response message in Khmer (if applicable)
+|String
+|===
+
+===== Error Responses
+
+* *Status Code*: `400 Bad Request`
+* *Status Code*: `401 Unauthorized`
+* *Status Code*: `403 Forbidden`
+* *Status Code*: `500 Internal Server Error`
+
+== Using the API
+
+=== Example Request
+
+[source,bash]
+----
+curl --location 'http://localhost:9090/api/v1.0/oauth/token' \
+--header 'content-type: application/json' \
+--header 'client_id: 12345' \
+--header 'client_secret: 12345_secret' \
+--header 'x-api-key: 12345_api_key' \
+--header 'device_id: 12345' \
+--header 'client_req_timestamp: 2022-01-01T12:12:12+07:00' \
+--header 'app_version: 1.0.1' \
+--header 'device_info: {"device_model":"A3","branch_code":"001"}' \
+--data '{
+    "grant_type": "password",
+    "username": "85512121212",
+    "password": "HaytI3OydBDl5gFofb7fNJL/KdzxnroelfsrFach3q8Tf7EMQFUvgp+hMji9asfcbsmlSDv9I3jlzkFGQhlD6zeJWGVxhn7OoOh+EbHWf7AsNS9smAPqmXBm4zUYgpizTCrwCnhW734ST0o2lz92DySTeoruhYc+QZpCiLw8CU30CuZhd9dcGrQFAobp/S/OZZEd9lNMint7h/9ZnSNFEaxc103xqJezo2xn2IjkFtGr+PRsgYe9ejSk5qSu1PFvLYszm5rosR6qWmmNyweNJlu5Bdvtp0nUnoZFpXSXUNwCC8l6KfABFHmZe6TVEWuFw1TrR9/iY/9cl0khKwxD0mxdcelFbS2sewQvXBTXDhYKQ1dxYxQqxmcxOxW6MrajQXdNfnx4TQp/tAQHsYxauOWUtW4a83WoXND0rd99YopqPJsorSmGlwa4LBoiIz0vYrviM6LIruXaUVQh4MpdA7fIeqHPpiHRHOG5EqsQzqMgRecLkzSOzcx3mkNFWPwRbgPe3ZzIQCS2xE/YWlvItB8N7HTGEUehuJa7p/7qwPmyuE0euhLWO5juHrC+jPR9GRiTpCGUkYg/K1tA7XPjqbu6lLGUmSbj+LbPrkKmohpJpvujCdgxUOJH7qx4pa9mpNvXCvJfpPYPPOpDcayIxhViEUAbKmZRn0WoMpIDCJ8="
+}'
+----
+
+=== JWT Token Structure
+
+The access token is a JWT token with the following structure:
+
+[source]
+----
+{
+  "iss": "12345",
+  "jti": "F266A054FC00448BCC96989B1728C2A",
+  "AUTH_ROLES": "USER_ROLE",
+  "iat": 1743407166,
+  "exp": 1743407766,
+  "channel_type": "INTERNAL",
+  "cif": "000000001",
+  "device_id": "12345"
+}
+----
+
+== Security Considerations
+
+=== Token Expiration
+
+Access tokens have a limited lifespan and should be refreshed using the refresh token when they expire.
+
+=== Sensitive Information
+
+Password and other sensitive information should be properly encrypted before transmission.

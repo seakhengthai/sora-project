@@ -1,0 +1,57 @@
+= Project Overview: Fund Transfer System
+
+== Project Description:
+
+The *Fund Transfer System* is a distributed application designed to handle *peer-to-peer (P2P) fund transfers* and *gift transfers* with a microservices architecture. The system is composed of three key microservices: *Gateway Service*, *User Profile Service*, and *Payment Service*. The *Gateway Service* acts as the entry point to route requests to the appropriate services, while the *User Profile Service* handles user data, and the *Payment Service* manages transactions and fund transfers.
+
+In addition to routing requests, the *Gateway Service* is responsible for validating both *client credentials* using *OAuth 2.0 Client Credentials Grant* and *user authentication tokens* (e.g., *JWT*), ensuring that only authorized clients and users can access the system. This adds an additional layer of security to the system, preventing unauthorized access.
+
+== Key Features:
+
+1. *Gateway Service (API Gateway)*
+- Acts as a *single entry point* for all client requests.
+- Manages routing of requests to the *User Profile Service* and *Payment Service*.
+- Implements load balancing, request filtering, and API rate-limiting.
+- *Validates Client Credentials* using *OAuth 2.0 Client Credentials Grant*.
+- *Validates User Authentication Tokens* (JWT tokens) to ensure that only authenticated users can access protected resources.
+- Ensures only authorized clients and users can access protected resources.
+
+2. *User Profile Service*
+- Manages *user profiles* and *account information* (e.g., account number, balance, transaction limits).
+- Handles user registration, login, and data retrieval.
+- Provides authentication and authorization using *JWT* tokens.
+
+3. *Payment Service*
+- Handles *fund transfers* and *gift transfers*.
+- Processes *transaction limits* and applies fees based on transaction amounts.
+- Integrates with external systems (if applicable) for fund settlement.
+
+4. *Transaction History*
+- Users can check/download their transaction history, including fund transfers and gifts sent.
+
+5. *Gift Transfer*
+- Allows users to send funds to others as a "gift" with optional messaging.
+
+
+== System Architecture:
+
+1. *Gateway Service* (API Gateway)
+- Routes all incoming API requests to the appropriate service (either *User Profile Service* or *Payment Service*).
+- Implements security features such as *JWT token validation*, *OAuth 2.0 Client Credentials Grant* for client authentication, and request throttling.
+- Validates *user authentication tokens* to ensure that only authenticated users can access protected resources.
+
+2. *User Profile Service*
+- Stores and manages user profile data, including balances, transaction history, and account limits.
+- Provides authentication via *Spring Security* and *JWT*.
+
+3. *Payment Service*
+- Handles the business logic for initiating fund transfers and gift transfers.
+- Ensures transaction limits and fees are enforced for every transfer.
+- Integrates with external banking APIs (if applicable) for real-time fund settlement.
+
+4. *Communication Between Services:*
+- *WebClient*/*FeignClient* enable communication between the Gateway, User Profile, and Payment services.
+
+== Conclusion:
+
+This *Fund Transfer System* with a *microservices architecture* leverages *Spring Boot* and *Spring Cloud Gateway* to build a secure, scalable, and efficient service for handling fund transfers and user profiles. By incorporating *OAuth 2.0 Client Credentials Grant* for client authentication and *JWT token validation* for user authentication, the system ensures that only authorized clients and authenticated users can access the services. The system is designed to scale independently, ensuring high availability, performance, and security for end users.

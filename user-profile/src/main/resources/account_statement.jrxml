@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="223d5ed1-e57a-448a-9416-57b2b9872f11">
+	<parameter name="accountName"/>
+	<parameter name="accountNumber"/>
+	<parameter name="accountCurrency"/>
+	<parameter name="accountBalance" class="java.math.BigDecimal"/>
+	<parameter name="fromDate"/>
+	<parameter name="toDate"/>
+
+	<field name="txnDate">
+		<fieldDescription><![CDATA[txnDate]]></fieldDescription>
+	</field>
+	<field name="description">
+		<fieldDescription><![CDATA[description]]></fieldDescription>
+	</field>
+	<field name="accountNo">
+		<fieldDescription><![CDATA[accountNo]]></fieldDescription>
+	</field>
+	<field name="currency">
+		<fieldDescription><![CDATA[currency]]></fieldDescription>
+	</field>
+	<field name="amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[amount]]></fieldDescription>
+	</field>
+	<field name="endingBalance" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[endingBalance]]></fieldDescription>
+	</field>
+	<field name="drcrInd" class="com.demo.user.profile.domain.DrcrInd">
+		<fieldDescription><![CDATA[drcrInd]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="279" splitType="Stretch">
+			<frame>
+				<reportElement x="1" y="1" width="549" height="276" uuid="8ca57501-0835-4812-88ab-45270450c2d2"/>
+				<staticText>
+					<reportElement x="1" y="50" width="280" height="28" forecolor="#009DA5" uuid="7467aeb3-68b4-48a6-8d14-771aeda42edb"/>
+					<textElement textAlignment="Left">
+						<font size="18" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ACCOUNT STATEMENT]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="1" y="78" width="300" height="20" forecolor="#4F4F4F" uuid="1bda238c-90bf-455e-9050-2cddc21c6785"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["From : "+new SimpleDateFormat("dd-MMM-yyyy").format(java.util.Date.parse($P{fromDate}))+" to "+new SimpleDateFormat("dd-MMM-yyyy").format(java.util.Date.parse($P{toDate}))]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="1" y="118" width="150" height="20" uuid="b5944bd5-ee12-456e-a7ef-12897b9f64ad"/>
+					<textElement textAlignment="Left">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Account Detail ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="3" y="150" width="108" height="20" forecolor="#4F4F4F" uuid="fa9b0469-1923-4502-ae20-2d13066bbc0f"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Account Name ]]></text>
+				</staticText>
+				<textField textAdjust="ScaleFont">
+					<reportElement x="120" y="150" width="255" height="20" uuid="fb6a85eb-a608-40c1-a78b-169baf1064ba"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{accountName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="3" y="170" width="108" height="20" forecolor="#4F4F4F" uuid="7b8445fb-e2ab-4a37-89b7-e835b2dbb4f3"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Account Number ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="120" y="170" width="168" height="20" uuid="bd30146d-394b-4e79-a2dd-f1795b0efa65"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{accountNumber}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="3" y="190" width="108" height="20" forecolor="#4F4F4F" uuid="87032949-ab6b-4e4b-aacd-b6760402c7b0"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Account Currency ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="120" y="190" width="168" height="20" uuid="7bd4db40-e18d-459f-8116-7a4a3710948e"/>
+					<textElement verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA[$P{accountCurrency}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="3" y="210" width="108" height="20" forecolor="#4F4F4F" uuid="87032949-ab6b-4e4b-aacd-b6760402c7b0"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Account Balance ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="120" y="210" width="168" height="20" uuid="7bd4db40-e18d-459f-8116-7a4a3710948e"/>
+					<textElement verticalAlignment="Top"/>
+					<textFieldExpression><![CDATA[$P{accountBalance}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="1" y="250" width="150" height="16" uuid="f26dbc88-dc5b-401a-b61b-25cfdb949e86"/>
+					<textElement textAlignment="Left">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Transaction Detail]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<frame>
+				<reportElement x="1" y="0" width="552" height="20" uuid="543b0506-e41c-46f1-a81d-d13e3c2197b2"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.1"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"  lineColor="#4F4F4F"/>
+					<leftPen lineWidth="0.0" lineColor ="#4F4F4F"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid" lineColor="#4F4F4F"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"  lineColor="#4F4F4F"/>
+				</box>
+				<staticText>
+					<reportElement x="1" y="1" width="120" height="18" forecolor="#121111" uuid="d8237bd7-d95d-4025-ba4a-aa2dd4a74a72">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="100" y="1" width="220" height="18" forecolor="#121111" uuid="65c046f9-590f-45c4-abe2-fda4357978e4">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Description]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="320" y="1" width="78" height="18" forecolor="#121111" uuid="c900fb80-f316-4389-972d-3ab4f0e0945f">
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Money Out]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="410" y="1" width="78" height="18" forecolor="#121111" uuid="1f815af5-97de-4d78-952e-2a042e7862b5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Money In]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="500" y="1" width="51" height="18" forecolor="#121111" uuid="3cb44d9f-0051-4bd1-a110-b1c19b68b61e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Balance]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<frame>
+				<reportElement x="1" y="0" width="552" height="18" uuid="04d011c3-879a-4c28-bee2-e0e13b62b1a6"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="5" rightPadding="0">
+					<pen lineWidth="0.1"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"  lineColor="#4F4F4F"/>
+					<leftPen lineWidth="0.0" lineColor="#000000"/>
+					<bottomPen lineWidth="0.1" lineStyle="Solid"  lineColor="#4F4F4F"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"  lineColor="#4F4F4F"/>
+				</box>
+				<textField textAdjust="StretchHeight">
+					<reportElement x="1" y="1" width="120" height="15" forecolor="#4F4F4F" uuid="5c7899ce-d606-48f5-ae16-b0012651462b"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{txnDate}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement x="100" y="1" width="200" height="15" forecolor="#4F4F4F" uuid="9929a6ff-491d-4a9e-9fb2-0d4ebe7d8deb"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###.00" textAdjust="StretchHeight">
+					<reportElement x="301" y="1" width="70" height="15" forecolor="#4F4F4F" uuid="74288409-1a75-47b9-9eca-cf766ccce356"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[
+    "DEBIT".equals($F{drcrInd}.name()) ?
+    $F{amount} + " " + $F{currency} : ""
+]]></textFieldExpression>
+				</textField>
+				<textField pattern="###.00" textAdjust="StretchHeight">
+					<reportElement x="380" y="1" width="70" height="15" forecolor="#4F4F4F" uuid="0de88255-14d4-4d72-b302-f6e5f3f0459c"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[
+    "CREDIT".equals($F{drcrInd}.name()) ?
+    $F{amount} + " " + $F{currency} : ""
+]]></textFieldExpression>
+				</textField>
+				<textField pattern="###.00" textAdjust="StretchHeight">
+					<reportElement x="480" y="1" width="70" height="15" forecolor="#4F4F4F" uuid="6e615501-95ea-4d2d-9bf0-5a0b35793e0b"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{endingBalance}+" "+$F{currency}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="91">
+			<textField evaluationTime="Now">
+				<reportElement x="480" y="75" width="50" height="15" forecolor="#4F4F4F" uuid="b5944bd5-ee12-456e-a7ef-12897b9f64ad"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="false" />
+				</textElement>
+				<textFieldExpression>
+					<![CDATA["Page: " + $V{PAGE_NUMBER} +" /"]]>
+				</textFieldExpression>
+			</textField>
+
+			<textField evaluationTime="Report">
+				<reportElement x="532" y="75" width="50" height="15" forecolor="#4F4F4F" uuid="b5944bd5-ee12-456e-a7ef-12897b9f64ad"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="false" />
+				</textElement>
+				<textFieldExpression>
+					<![CDATA[$V{PAGE_NUMBER}]]>
+				</textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

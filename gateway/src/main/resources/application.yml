@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: local
+  cloud:
+    config:
+      label: latest
+    gateway:
+      default-filters:
+        - RemoveRequestHeader=authorization
+        - RemoveRequestHeader=client_secret
+        - RemoveRequestHeader=digest
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+  security:
+    csrf:
+      enabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh,gateway,env
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.gateway.route: TRACE

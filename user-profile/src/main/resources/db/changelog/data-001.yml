@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01-insert-user-data
+      author: seakheng
+      changes:
+        - sqlFile:
+            path: db/changelog/data/user.sql
+            relativeToChangelogFile: false

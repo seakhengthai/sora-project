@@ -1,0 +1,842 @@
+= Transfer API Documentation
+:toc: left
+:toclevels: 3
+:sectnums:
+:imagesdir: images
+
+== Overview
+
+This document provides details about the Payment Service API, which allows clients to initiate and manage transfer transactions.
+
+== Base URL
+
+[source]
+----
+http://localhost:9090
+----
+
+== Authentication
+
+The API uses bearer token authentication. Include the token in the `Authorization` header:
+
+[source]
+----
+Authorization: Bearer <jwt_token>
+----
+
+== Endpoints
+
+=== Create Transfer
+
+Creates a new payment transaction.
+
+[source]
+----
+POST /payment-service/api/v1.0/payments/create
+----
+
+==== Request Headers
+
+[cols="3,2,6"]
+|===
+|Header |Required |Description
+
+|`content-type`
+|Yes
+|Must be set to `application/json`
+
+|`client_id`
+|Yes
+|Unique identifier for the client application
+
+|`client_secret`
+|Yes
+|Secret key for client authentication
+
+|`x-api-key`
+|Yes
+|API key for access control
+
+|`device_id`
+|Yes
+|Unique identifier for the client device
+
+|`client_req_timestamp`
+|Yes
+|ISO 8601 formatted timestamp of the request
+
+|`app_version`
+|Yes
+|Version of the client application
+
+|`device_info`
+|Yes
+|JSON object containing device details such as device model and branch code
+
+|`Authorization`
+|Yes
+|Bearer token for user authentication
+|===
+
+==== Request Body
+
+[cols="3,2,6"]
+|===
+|Field |Type |Description
+
+|`service_id`
+|String
+|Identifier for the payment service (e.g., "transfer_within")
+
+|`sender_account_no`
+|String
+|Account number of the sender
+
+|`receiver_account_no`
+|String
+|Account number of the receiver
+
+|`amount`
+|Number
+|Transaction amount
+
+|`currency`
+|String
+|Currency code (e.g., "USD", "KHR")
+
+|`purpose`
+|String
+|Purpose of the transaction (e.g., "Family")
+
+|`remarks`
+|String
+|Additional remarks for the transaction
+
+|`channel`
+|String
+|Channel through which the transaction is initiated (e.g., "INTERNAL")
+
+|`additional_ref`
+|Object
+|Additional reference data as key-value pairs
+|===
+
+==== Request Example
+
+[source,bash]
+----
+curl --location 'http://localhost:9090/payment-service/api/v1.0/payments/create' \
+--header 'content-type: application/json' \
+--header 'client_id: 12345' \
+--header 'client_secret: 12345_secret' \
+--header 'x-api-key: 12345_api_key' \
+--header 'device_id: 12345' \
+--header 'client_req_timestamp: 2022-01-01T12:12:12+07:00' \
+--header 'app_version: 1.0.1' \
+--header 'device_info: {"device_model":"A3","branch_code":"001"}' \
+--header 'Authorization: Bearer access_token' \
+--data '{
+    "service_id": "transfer_within",
+    "sender_account_no": "000000001001",
+    "receiver_account_no": "000000001002",
+    "amount": 1.69,
+    "currency": "USD",
+    "purpose": "Family",
+    "remarks": "test",
+    "channel": "INTERNAL",
+    "additional_ref": {
+        "key1": "value1"
+    }
+}'
+----
+
+==== Response
+
+[cols="3,2,6"]
+|===
+|Field |Type |Description
+
+|`code`
+|String
+|Response code (e.g., "S0001" for success)
+
+|`message`
+|String
+|Response message
+
+|`title`
+|String
+|Optional title for the response
+
+|`trace_id`
+|String
+|Unique identifier for tracing the request
+
+|`data`
+|Object
+|Contains the payment transaction details
+
+|`data.transaction_id`
+|String
+|Unique identifier for the transaction
+
+|`data.transaction_date`
+|String
+|ISO 8601 formatted date and time of the transaction
+
+|`data.id`
+|String
+|UUID of the transaction
+
+|`data.payment_details`
+|Object
+|Contains detailed information about the payment
+
+|`data.payment_details.command`
+|String
+|Command type (e.g., "PAYMENT")
+
+|`data.payment_details.status`
+|String
+|Current status of the payment (e.g., "CREATED")
+
+|`data.payment_details.sender`
+|Object
+|Information about the sender
+
+|`data.payment_details.receiver`
+|Object
+|Information about the receiver
+
+|`data.payment_details.amount`
+|Number
+|Transaction amount
+
+|`data.payment_details.currency`
+|String
+|Currency code of the transaction
+
+|`data.payment_details.cross_currency`
+|Object
+|Information about currency conversion if applicable
+
+|`data.payment_details.fee`
+|Number
+|Transaction fee
+
+|`data.payment_details.fee_tier_id`
+|String
+|Identifier for the fee tier
+
+|`data.payment_details.purpose`
+|String
+|Purpose of the transaction
+
+|`data.payment_details.remarks`
+|String
+|Additional remarks for the transaction
+
+|`data.payment_details.service`
+|Object
+|Information about the service used
+
+|`data.payment_details.additional_ref`
+|Object
+|Additional reference data as key-value pairs
+
+|`data.channel`
+|String
+|Channel through which the transaction was initiated
+
+|`message_kh`
+|String
+|Message in Khmer language (if applicable)
+|===
+
+==== Response Example
+
+[source,json]
+----
+{
+    "code": "S0001",
+    "message": "Success.",
+    "title": null,
+    "trace_id": "67ea4852309d4178ffa5899d96a3a182",
+    "data": {
+        "transaction_id": "2259a496f7a0424e",
+        "transaction_date": "2025-03-31T07:46:28.120+00:00",
+        "id": "d1d6abc9-b185-4578-b53e-567fc88e4ec6",
+        "payment_details": {
+            "command": "PAYMENT",
+            "status": "CREATED",
+            "sender": {
+                "account_no": "000000001001",
+                "currency": "USD"
+            },
+            "receiver": {
+                "account_no": "000000001002",
+                "currency": "KHR"
+            },
+            "amount": 1.69,
+            "currency": "USD",
+            "cross_currency": {
+                "type": "RECEIVER",
+                "equivalent_amount": 6800,
+                "exchange_currency": "KHR",
+                "exchange_rate": 4000.0
+            },
+            "fee": 0.0,
+            "fee_tier_id": null,
+            "purpose": "Family",
+            "remarks": "test",
+            "service": {
+                "id": "90115114-8d38-4261-99c7-213d0f2e7e7b",
+                "service_id": "transfer_within",
+                "name": "Transfer Within"
+            },
+            "additional_ref": {
+                "key1": "value1"
+            }
+        },
+        "channel": "INTERNAL"
+    },
+    "message_kh": null
+}
+----
+
+==== Cross-Currency Transactions
+
+When the sender and receiver accounts have different currencies, the `cross_currency` object in the response provides details about the currency conversion:
+
+[cols="3,2,6"]
+|===
+|Field |Type |Description
+
+|`type`
+|String
+|Indicates which side of the transaction is affected by the currency conversion ("SENDER" or "RECEIVER")
+
+|`equivalent_amount`
+|Number
+|The equivalent amount in the exchange currency
+
+|`exchange_currency`
+|String
+|The currency code for the converted amount
+
+|`exchange_rate`
+|Number
+|The exchange rate used for the conversion
+|===
+
+=== Confirm Transfer
+
+Confirms a payment transaction and queues it for processing.
+
+==== Request
+
+[cols="1,3"]
+|===
+|Method |POST
+|URL |/payment-service/api/v1.0/payments/confirm
+|Content Type |application/json
+|===
+
+==== Headers
+
+[cols="2,3,1"]
+|===
+|Header |Description |Required
+
+|content-type
+|The content type of the request body. Must be `application/json`.
+|Yes
+
+|client_id
+|Unique identifier for the client application.
+|Yes
+
+|client_secret
+|Secret key associated with the client ID.
+|Yes
+
+|x-api-key
+|API key for authentication.
+|Yes
+
+|device_id
+|Unique identifier for the device making the request.
+|Yes
+
+|client_req_timestamp
+|Timestamp of when the request was initiated in ISO 8601 format.
+|Yes
+
+|app_version
+|Version of the client application.
+|Yes
+
+|device_info
+|JSON string containing device information.
+|Yes
+
+|TPIN
+|Encrypted transaction PIN for payment authorization.
+|Yes
+
+|Authorization
+|Bearer token for user authentication.
+|Yes
+|===
+
+==== Request Body
+
+[source,json]
+----
+{
+    "id": "d1d6abc9-b185-4578-b53e-567fc88e4ec6"
+}
+----
+
+[cols="1,2,1"]
+|===
+|Field |Description |Required
+
+|id
+|Unique identifier for the payment transaction.
+|Yes
+|===
+
+==== Response
+
+===== Success Response (200 OK)
+
+[source,json]
+----
+{
+    "code": "S0001",
+    "message": "Success.",
+    "title": null,
+    "trace_id": "67ea32eecce4514c0ef6975e41e4ef5e",
+    "data": {
+        "status": "PENDING",
+        "message": "Payment accepted and queued for processing",
+        "transaction_id": "988aec94d9d3436e"
+    },
+    "message_kh": null
+}
+----
+
+[cols="1,3"]
+|===
+|Field |Description
+
+|code
+|Response code indicating the result of the operation. "S0001" indicates success.
+
+|message
+|Human-readable message describing the result.
+
+|title
+|Optional title for the response.
+
+|trace_id
+|Unique identifier for tracing the request through the system.
+
+|data
+|Object containing transaction details.
+
+|data.status
+|Current status of the payment transaction.
+
+|data.message
+|Detailed message about the payment status.
+
+|data.transaction_id
+|Unique identifier for the transaction.
+
+|message_kh
+|Optional message in Khmer language.
+|===
+
+
+==== Sample Request
+
+[source,bash]
+----
+curl --location 'http://localhost:9090/payment-service/api/v1.0/payments/confirm' \
+--header 'content-type: application/json' \
+--header 'client_id: 12345' \
+--header 'client_secret: 12345_secret' \
+--header 'x-api-key: 12345_api_key' \
+--header 'device_id: 12345' \
+--header 'client_req_timestamp: 2022-01-01T12:12:12+07:00' \
+--header 'app_version: 1.0.1' \
+--header 'device_info: {"device_model":"A3","branch_code":"001"}' \
+--header 'TPIN: HaytI3OydBDl5gFofb7fNJL/KdzxnroelfsrFach3q8Tf7EMQFUvgp+hMji9asfcbsmlSDv9I3jlzkFGQhlD6zeJWGVxhn7OoOh+EbHWf7AsNS9smAPqmXBm4zUYgpizTCrwCnhW734ST0o2lz92DySTeoruhYc+QZpCiLw8CU30CuZhd9dcGrQFAobp/S/OZZEd9lNMint7h/9ZnSNFEaxc103xqJezo2xn2IjkFtGr+PRsgYe9ejSk5qSu1PFvLYszm5rosR6qWmmNyweNJlu5Bdvtp0nUnoZFpXSXUNwCC8l6KfABFHmZe6TVEWuFw1TrR9/iY/9cl0khKwxD0mxdcelFbS2sewQvXBTXDhYKQ1dxYxQqxmcxOxW6MrajQXdNfnx4TQp/tAQHsYxauOWUtW4a83WoXND0rd99YopqPJsorSmGlwa4LBoiIz0vYrviM6LIruXaUVQh4MpdA7fIeqHPpiHRHOG5EqsQzqMgRecLkzSOzcx3mkNFWPwRbgPe3ZzIQCS2xE/YWlvItB8N7HTGEUehuJa7p/7qwPmyuE0euhLWO5juHrC+jPR9GRiTpCGUkYg/K1tA7XPjqbu6lLGUmSbj+LbPrkKmohpJpvujCdgxUOJH7qx4pa9mpNvXCvJfpPYPPOpDcayIxhViEUAbKmZRn0WoMpIDCJ8=' \
+--header 'Authorization: Bearer access_token' \
+--data '{
+    "id": "d1d6abc9-b185-4578-b53e-567fc88e4ec6"
+}'
+----
+
+=== Create Gift Transfer
+
+Creates a gift transfer from a sender's account and generates a gift code for the recipient.
+
+==== Request
+
+[cols="1,3"]
+|===
+|Method |POST
+|URL |/payment-service/api/v1.0/gift-transfer/create
+|Content Type |application/json
+|===
+
+==== Headers
+
+[cols="2,3,1"]
+|===
+|Header |Description |Required
+
+|content-type
+|The content type of the request body. Must be `application/json`.
+|Yes
+
+|client_id
+|Unique identifier for the client application.
+|Yes
+
+|client_secret
+|Secret key associated with the client ID.
+|Yes
+
+|x-api-key
+|API key for authentication.
+|Yes
+
+|device_id
+|Unique identifier for the device making the request.
+|Yes
+
+|client_req_timestamp
+|Timestamp of when the request was initiated in ISO 8601 format.
+|Yes
+
+|app_version
+|Version of the client application.
+|Yes
+
+|device_info
+|JSON string containing device information.
+|Yes
+
+|TPIN
+|Encrypted transaction PIN for payment authorization.
+|Yes
+
+|Authorization
+|Bearer token for user authentication.
+|Yes
+|===
+
+==== Request Body
+
+[source,json]
+----
+{
+    "sender_account_no": "000000001001",
+    "amount": 1.68,
+    "currency": "USD",
+    "purpose": "Birthday Gift",
+    "remarks": "Enjoy your gift!"
+}
+----
+
+[cols="1,2,1"]
+|===
+|Field |Description |Required
+
+|sender_account_no
+|Account number of the sender.
+|Yes
+
+|amount
+|Amount to be transferred as a gift.
+|Yes
+
+|currency
+|Currency code of the transfer amount.
+|Yes
+
+|purpose
+|Purpose of the gift transfer.
+|Yes
+
+|remarks
+|Additional remarks or message for the recipient.
+|No
+|===
+
+==== Response
+
+===== Success Response (200 OK)
+
+[source,json]
+----
+{
+    "code": "S0001",
+    "message": "Success.",
+    "title": null,
+    "trace_id": "67ea41d8db7347f56c3e121fa981ced2",
+    "data": {
+        "transaction_id": "f842a553038f4b5a",
+        "gift_code": "59C3883E83",
+        "expires_at": "2025-04-01T07:18:49.457+00:00"
+    },
+    "message_kh": null
+}
+----
+
+[cols="1,3"]
+|===
+|Field |Description
+
+|code
+|Response code indicating the result of the operation. "S0001" indicates success.
+
+|message
+|Human-readable message describing the result.
+
+|title
+|Optional title for the response.
+
+|trace_id
+|Unique identifier for tracing the request through the system.
+
+|data
+|Object containing gift transfer details.
+
+|data.transaction_id
+|Unique identifier for the transaction.
+
+|data.gift_code
+|Generated code that the recipient can use to claim the gift.
+
+|data.expires_at
+|Expiration date and time of the gift code in ISO 8601 format.
+
+|message_kh
+|Optional message in Khmer language.
+|===
+
+==== Sample Requests
+
+[source,bash]
+----
+curl --location 'http://localhost:9090/payment-service/api/v1.0/gift-transfer/create' \
+--header 'content-type: application/json' \
+--header 'client_id: 12345' \
+--header 'client_secret: 12345_secret' \
+--header 'x-api-key: 12345_api_key' \
+--header 'device_id: 12345' \
+--header 'client_req_timestamp: 2022-01-01T12:12:12+07:00' \
+--header 'app_version: 1.0.1' \
+--header 'device_info: {"device_model":"A3","branch_code":"001"}' \
+--header 'TPIN: HaytI3OydBDl5gFofb7fNJL/KdzxnroelfsrFach3q8Tf7EMQFUvgp+hMji9asfcbsmlSDv9I3jlzkFGQhlD6zeJWGVxhn7OoOh+EbHWf7AsNS9smAPqmXBm4zUYgpizTCrwCnhW734ST0o2lz92DySTeoruhYc+QZpCiLw8CU30CuZhd9dcGrQFAobp/S/OZZEd9lNMint7h/9ZnSNFEaxc103xqJezo2xn2IjkFtGr+PRsgYe9ejSk5qSu1PFvLYszm5rosR6qWmmNyweNJlu5Bdvtp0nUnoZFpXSXUNwCC8l6KfABFHmZe6TVEWuFw1TrR9/iY/9cl0khKwxD0mxdcelFbS2sewQvXBTXDhYKQ1dxYxQqxmcxOxW6MrajQXdNfnx4TQp/tAQHsYxauOWUtW4a83WoXND0rd99YopqPJsorSmGlwa4LBoiIz0vYrviM6LIruXaUVQh4MpdA7fIeqHPpiHRHOG5EqsQzqMgRecLkzSOzcx3mkNFWPwRbgPe3ZzIQCS2xE/YWlvItB8N7HTGEUehuJa7p/7qwPmyuE0euhLWO5juHrC+jPR9GRiTpCGUkYg/K1tA7XPjqbu6lLGUmSbj+LbPrkKmohpJpvujCdgxUOJH7qx4pa9mpNvXCvJfpPYPPOpDcayIxhViEUAbKmZRn0WoMpIDCJ8=' \
+--header 'Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiIxMjM0NSIsImp0aSI6IkYyNjZBMDU0RkMwMDQ0ODlCQ0M5Njk4OUIxNzI4QzJBIiwiQVVUSF9ST0xFUyI6IlVTRVJfUk9MRSIsImlhdCI6MTc0MzQwNzE2NiwiZXhwIjoxNzQzNDA3NzY2LCJjaGFubmVsX3R5cGUiOiJJTlRFUk5BTCIsImNpZiI6IjAwMDAwMDAwMSIsImRldmljZV9pZCI6IjEyMzQ1In0.Of5SAEY9b4Ha4CLJGQPke3pq73ZocklbYUDzWTKHPjtDbeAdCZqNVfoKmbh1Oyx-pjz-ZIFI66BnKPWRMxkesiTXpS_SdDGhAAZljcDyZEXUgywVY9Zt5qGGopbcOObQiANqibMBECHpEFOpC4NDD69i6kVl2p3a4EuIGmvGdfgqHUaxqpbBt8oREd4JzgbLAm06LwK2jNno8C9XRFxCrkUzkC1yvQixCWQ6VO2jFkBCTfsYBdvZ4oSGLm1xmWGAbvKn4l2f2X3noSmhnY_YYKkxFrD5QtdMP0pGx6F7P7Zncsbg0hNMsNza939SCoer5_WXoPg25Z-POxoheyIgwdsQYSd5aa66nXuyyKjU6OKDtjfxkYHPhpGFtb2a5ORQBC8Eoh8s2QbbYPDRHkGjMwhmg5o_01gf3V8Px1UrcPAUEm_nS9qHiSbcYfHKytbFBORephv_s3uGFhiI7cT0h5u3Gm6Qb1RJNBHQll9fSDP6pOaPDyKs29D5Efn0Lqpj_ELSuZpgX8TsjNBh2xuZEAXZelPhizInIo0jiTor4TGW4oVdECtLsG5E9wGspgdqNZYuT73yXvZ29x1wZOPSWEK6a26c81UUNI5fbTHbY5Gb8uVLK7zz5jrfC0UAFM6PZQSGx1fkrDapeL1v4b8jc4ma5cpYAK1c5y1xrQSo-wc' \
+--data '{
+    "sender_account_no": "000000001001",
+    "amount": 1.68,
+    "currency": "USD",
+    "purpose": "Birthday Gift",
+    "remarks": "Enjoy your gift!"
+}'
+----
+
+=== Claim Gift Transfer
+This endpoint allows a user to claim a gift transfer using a gift code.
+
+==== Request
+[cols="1,4"]
+|===
+|Method |POST
+|URL |/payment-service/api/v1.0/gift-transfer/claim
+|Content-Type |application/json
+|===
+
+===== Headers
+[cols="2,3,1"]
+|===
+|Header |Description |Required
+
+|client_id
+|Client identifier for the application
+|Yes
+
+|client_secret
+|Secret key for client authentication
+|Yes
+
+|x-api-key
+|API key for request authorization
+|Yes
+
+|device_id
+|Unique identifier for the device making the request
+|Yes
+
+|client_req_timestamp
+|Timestamp of the request in ISO 8601 format
+|Yes
+
+|app_version
+|Version of the client application
+|Yes
+
+|device_info
+|JSON string containing device-specific information
+|Yes
+
+|TPIN
+|Encrypted transaction PIN
+|Yes
+
+|Authorization
+|Bearer token for user authentication
+|Yes
+|===
+
+===== Request Body
+[source,json]
+----
+{
+    "gift_code": "59C3883E83",
+    "receiver_account_no": "000000001002"
+}
+----
+
+===== Request Parameters
+[cols="2,2,1,3"]
+|===
+|Field |Type |Required |Description
+
+|gift_code
+|String
+|Yes
+|Unique code for the gift transfer
+
+|receiver_account_no
+|String
+|Yes
+|Account number of the recipient
+|===
+
+==== Response
+===== Success Response (200 OK)
+[source,json]
+----
+{
+    "code": "S0001",
+    "message": "Success.",
+    "title": null,
+    "trace_id": "67ea41dd630d37a702f95214c5041a71",
+    "data": {
+        "status": "PENDING",
+        "message": "Payment accepted and queued for processing",
+        "transaction_id": "f842a553038f4b5a"
+    },
+    "message_kh": null
+}
+----
+
+===== Response Fields
+[cols="2,2,3"]
+|===
+|Field |Type |Description
+
+|code
+|String
+|Response code indicating the status of the request
+
+|message
+|String
+|Human-readable message describing the response status
+
+|title
+|String
+|Optional title for the response message
+
+|trace_id
+|String
+|Unique identifier for tracing the request through the system
+
+|data
+|Object
+|Response payload containing the transaction details
+
+|data.status
+|String
+|Current status of the transaction (e.g., "PENDING", "SUCCESS", "FAILED")
+
+|data.message
+|String
+|Detailed description of the transaction status
+
+|data.transaction_id
+|String
+|Unique identifier for the transaction
+
+|message_kh
+|String
+|Optional message in Khmer language
+|===
+
+==== Example
+===== cURL Request
+[source,bash]
+----
+curl --location 'http://localhost:9090/payment-service/api/v1.0/gift-transfer/claim' \
+--header 'content-type: application/json' \
+--header 'client_id: 12345' \
+--header 'client_secret: 12345_secret' \
+--header 'x-api-key: 12345_api_key' \
+--header 'device_id: 12345' \
+--header 'client_req_timestamp: 2022-01-01T12:12:12+07:00' \
+--header 'app_version: 1.0.1' \
+--header 'device_info: {"device_model":"A3","branch_code":"001"}' \
+--header 'TPIN: HaytI3OydBDl5gFofb7fNJL/KdzxnroelfsrFach3q8Tf7EMQFUvgp+hMji9asfcbsmlSDv9I3jlzkFGQhlD6zeJWGVxhn7OoOh+EbHWf7AsNS9smAPqmXBm4zUYgpizTCrwCnhW734ST0o2lz92DySTeoruhYc+QZpCiLw8CU30CuZhd9dcGrQFAobp/S/OZZEd9lNMint7h/9ZnSNFEaxc103xqJezo2xn2IjkFtGr+PRsgYe9ejSk5qSu1PFvLYszm5rosR6qWmmNyweNJlu5Bdvtp0nUnoZFpXSXUNwCC8l6KfABFHmZe6TVEWuFw1TrR9/iY/9cl0khKwxD0mxdcelFbS2sewQvXBTXDhYKQ1dxYxQqxmcxOxW6MrajQXdNfnx4TQp/tAQHsYxauOWUtW4a83WoXND0rd99YopqPJsorSmGlwa4LBoiIz0vYrviM6LIruXaUVQh4MpdA7fIeqHPpiHRHOG5EqsQzqMgRecLkzSOzcx3mkNFWPwRbgPe3ZzIQCS2xE/YWlvItB8N7HTGEUehuJa7p/7qwPmyuE0euhLWO5juHrC+jPR9GRiTpCGUkYg/K1tA7XPjqbu6lLGUmSbj+LbPrkKmohpJpvujCdgxUOJH7qx4pa9mpNvXCvJfpPYPPOpDcayIxhViEUAbKmZRn0WoMpIDCJ8=' \
+--header 'Authorization: Bearer access_token' \
+--data '{
+    "gift_code": "59C3883E83",
+    "receiver_account_no": "000000001002"
+}'
+----
+
+===== Response
+[source,json]
+----
+{
+    "code": "S0001",
+    "message": "Success.",
+    "title": null,
+    "trace_id": "67ea41dd630d37a702f95214c5041a71",
+    "data": {
+        "status": "PENDING",
+        "message": "Payment accepted and queued for processing",
+        "transaction_id": "f842a553038f4b5a"
+    },
+    "message_kh": null
+}
+----
+
+== Security
+
+=== Authentication
+
+This API uses multiple layers of authentication:
+
+1. API Key (`x-api-key` header)
+2. Client credentials (`client_id` and `client_secret` headers)
+3. Bearer token authentication (`Authorization` header)
+4. Transaction PIN (`TPIN` header) for payment authorization

@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  gateway-service:
+    build: ./gateway-service
+    container_name: gateway-service
+    ports:
+      - "9090:9090"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - user-profile-service
+      - payment-service
+
+  user-profile-service:
+    build: ./user-profile-service
+    container_name: user-profile-service
+    ports:
+      - "9091:9091"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+  payment-service:
+    build: ./payment-service
+    container_name: payment-service
+    ports:
+      - "9092:9092"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo
+    ports:
+      - "5432:5432"

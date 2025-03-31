@@ -1,0 +1,508 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-apis_def-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: apis_def
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: service
+                  type: varchar(255)
+              - column:
+                  name: path
+                  type: varchar(500)
+              - column:
+                  name: method
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: varchar(50)
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+        - addUniqueConstraint:
+            tableName: apis_def
+            columnNames: service, method, path, version
+            constraintName: uq_service_method_path_version
+
+  - changeSet:
+      id: 002-add-indexes
+      author: seakheng
+      changes:
+        - createIndex:
+            indexName: idx_code
+            tableName: apis_def
+            columns:
+              - column:
+                  name: code
+        - createIndex:
+            indexName: idx_service_path
+            tableName: apis_def
+            columns:
+              - column:
+                  name: service
+              - column:
+                  name: path
+
+  - changeSet:
+      id: 003-create-role-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+  - changeSet:
+      id: 004-add-index-role-code
+      author: seakheng
+      changes:
+        - createIndex:
+            indexName: idx_role_code
+            tableName: role
+            columns:
+              - column:
+                  name: code
+
+  - changeSet:
+      id: 005-create-policy-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: policy
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+  - changeSet:
+      id: 006-add-index-policy-code
+      author: seakheng
+      changes:
+        - createIndex:
+            indexName: idx_policy_code
+            tableName: policy
+            columns:
+              - column:
+                  name: code
+
+  - changeSet:
+      id: 007-create-clients-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: clients
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: secret
+                  type: varchar(255)
+              - column:
+                  name: roles
+                  type: varchar(255)
+              - column:
+                  name: access_token_expired
+                  type: bigint
+              - column:
+                  name: refresh_token_expired
+                  type: bigint
+              - column:
+                  name: channel
+                  type: varchar(255)
+              - column:
+                  name: grant_type
+                  type: varchar(255)
+              - column:
+                  name: scopes
+                  type: varchar(255)
+              - column:
+                  name: is_enabled_hash
+                  type: boolean
+                  defaultValue: true
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+
+  - changeSet:
+      id: 011-create-client_apis-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: client_apis
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: api_key
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+
+  - changeSet:
+      id: 014-create-client_policy-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: client_policy
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: policy_code
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: policy_config
+                  type: varchar(255)
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+  - changeSet:
+      id: 017-create-client_published_api-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: client_published_api
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: api_key
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: client_api_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: api_code
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: published_on
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: retired_on
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: num_published
+                  type: integer
+              - column:
+                  name: is_published
+                  type: boolean
+                  defaultValue: false
+              - column:
+                  name: version
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+  - changeSet:
+      id: 019-create-client_role-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: client_role
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_code
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_type
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+  - changeSet:
+      id: 022-create-client_token_logs-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: client_token_logs
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: token_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cif
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: device_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+

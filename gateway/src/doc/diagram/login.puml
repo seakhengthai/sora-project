@@ -1,0 +1,23 @@
+@startuml
+actor Client
+
+participant "API Gateway" as Gateway
+participant "User Profile" as UPS
+
+Client -> Gateway : Sends Token Request\n(client_id, client_secret, username, password)
+Gateway -> Gateway : Validate Client Credentials\n(client_id, client_secret)
+alt Valid Client Credentials
+    Gateway -> UPS : Validate username & password\n(using WebClient)
+    UPS -> UPS : Check user credentials
+    alt Valid User Credentials
+        UPS -> Gateway : Return Valid\nUser Profile Info
+        Gateway -> Gateway : Generate Access Token & Refresh Token
+        Gateway -> Client : Return OAuth Token Response\n(Access Token, Refresh Token)
+    else Invalid User Credentials
+        UPS -> Gateway : Return Invalid\nUser Credentials
+        Gateway -> Client : Return Error\n(Invalid User Credentials)
+    end
+else Invalid Client Credentials
+    Gateway -> Client : Return Error\n(Invalid Client Credentials)
+end
+@enduml

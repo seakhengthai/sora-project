@@ -1,0 +1,1261 @@
+{
+	"info": {
+		"_postman_id": "b0c2f62c-4933-4066-be19-aefdd291f59c",
+		"name": "Assignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2768349",
+		"_collection_link": "https://sdphatthabank.postman.co/workspace/HTB~cf02f065-4ca8-45c8-84c1-482a00a599d8/collection/2768349-b0c2f62c-4933-4066-be19-aefdd291f59c?action=share&source=collection_link&creator=2768349"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "OAuth Client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"grant_type\": \"client_credentials\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1.0/oauth/token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Kok Dara)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson = pm.response.json();\r",
+									"pm.globals.set(\"access_token\", responseJson.data.access_token);\r",
+									"console.log(\"Saved Access Token:\", responseJson.data.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"grant_type\": \"password\",\r\n    \"username\": \"85512121212\",\r\n    \"password\": \"HaytI3OydBDl5gFofb7fNJL/KdzxnroelfsrFach3q8Tf7EMQFUvgp+hMji9asfcbsmlSDv9I3jlzkFGQhlD6zeJWGVxhn7OoOh+EbHWf7AsNS9smAPqmXBm4zUYgpizTCrwCnhW734ST0o2lz92DySTeoruhYc+QZpCiLw8CU30CuZhd9dcGrQFAobp/S/OZZEd9lNMint7h/9ZnSNFEaxc103xqJezo2xn2IjkFtGr+PRsgYe9ejSk5qSu1PFvLYszm5rosR6qWmmNyweNJlu5Bdvtp0nUnoZFpXSXUNwCC8l6KfABFHmZe6TVEWuFw1TrR9/iY/9cl0khKwxD0mxdcelFbS2sewQvXBTXDhYKQ1dxYxQqxmcxOxW6MrajQXdNfnx4TQp/tAQHsYxauOWUtW4a83WoXND0rd99YopqPJsorSmGlwa4LBoiIz0vYrviM6LIruXaUVQh4MpdA7fIeqHPpiHRHOG5EqsQzqMgRecLkzSOzcx3mkNFWPwRbgPe3ZzIQCS2xE/YWlvItB8N7HTGEUehuJa7p/7qwPmyuE0euhLWO5juHrC+jPR9GRiTpCGUkYg/K1tA7XPjqbu6lLGUmSbj+LbPrkKmohpJpvujCdgxUOJH7qx4pa9mpNvXCvJfpPYPPOpDcayIxhViEUAbKmZRn0WoMpIDCJ8=\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1.0/oauth/token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Sok Pisey)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson = pm.response.json();\r",
+									"pm.globals.set(\"access_token\", responseJson.data.access_token);\r",
+									"console.log(\"Saved Access Token:\", responseJson.data.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"grant_type\": \"password\",\r\n    \"username\": \"85513131313\",\r\n    \"password\": \"MBzvP3/zG7pQkWn15OXN8b6DJ7HiKBg88nEcS/8EDCt8NBXJ1RIkcQYmxUcelqhqzzfBsOFJS8Ih3n6aVhhX5Ou+OaXaX0Tk09daTcPdUqYYDlwyadgadGQAZm8v7Sh34VW6ICv0CyQP4veYnEM9KCo9vyT+3QF6OaOrgsDnOuW+pwzg1YfVbm55/mc48ohYyNU/L6REv5YcgKKdDQ8gzvIzZ7VDTCDcypnc95i/azDDCkwuCvn7iqOjSVkhtWqPZLX8WV43AEX1AVWipQsTQ971lqY5Su2Glhe3m405vh0NkAzqG2RSbEfyavjWfvHbByjvA7KyS1cKofR7TUdKAs38292FdOchKXvN2UQZWK+XEO3D8iwbPts3jtUNUOt/LtOJftmT/Y9BHUpjwqSR1ed5RDH/rsEpTFULFil0oT4XFtCcEREPQllA9aOIT6TyIRsBR+1lWZXiowKoC3xWcIGd8/QGX3F7ydPWzoExrBvWHMxopFXKI6oho07PvgfHpkzEwyciDzuJfue9ugJUo9p3V77ccrMRrvOQRcPCcbOh7sg3hGNrLdARVbL+i6d0dXof3ofwbzxQ7R8aZguQdOC9Wdw4ObxjIb188LBCKq+Iw6+kwAHLtZQH4sKnhlZUFCxg1iEFu9/ZKqk/SKWT9eC3wEw9bNdFPTGaRSilyaM=\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1.0/oauth/token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Kuy Emm)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson = pm.response.json();\r",
+									"pm.globals.set(\"access_token\", responseJson.data.access_token);\r",
+									"console.log(\"Saved Access Token:\", responseJson.data.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"grant_type\": \"password\",\r\n    \"username\": \"85510101010\",\r\n    \"password\": \"FDhmOAweffEbqB/IP1pPmU0qiTwtZnucYyclS9sNcbUMtB5w+mlq4mTye6ndb/pbFMCVCxizDmrskUcuNX4NMS0ukszkPgvNfZfjeSxDhukOSs6N8GgygNvteAX/cz6vHmld1tObtP3jffBSx0riFhLs4LyLZesNBJJgKysF/2DGVd/qtbmcoh0zrHNnw61QquZ1JWMoXGu6Gsuq7Ry+nWFnjqU5y+zLxobjN2HZpckfncHSN6hNkvoZgn14QmM9Pag4ewEAlusvy4JtfVJASHoSPsaF4JbDR5gF7WU2tpaHKnXnGAhJLdxPlTX5JksqLww64Qggz8yXjmr72QT8zaocWQaAd+hMwuINWxkL2pVToAyIemoEo4AJcHAkFn0DFu3HoVMhubg9UIgv+Ak16eDWVQlljLc8D9tC/WaCcUm56BET3byqbd1NH9BSWFXQvA2RGutRSASjwG9YoXkczSrnpk83N2vr7+Uz29MCcAS1g/k9Lp27WHm1fBIbMtbIKSWu8rNLt2cMGM7VHioJOIL19otxwvyDTtaTFhgWiM7+VaWSO1jEb6CN0T9lkYB0RETacFJ2UvLul+mKjk4E5ziE0oeVyXVaEsQ8t+sst3NZVbXsXC/Op960hsnohXwrrimRCBgpmWgQWs3MCAbCplvWKW4ctQvpgaqNbqRCyiw=\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1.0/oauth/token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1.0",
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "List Account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/user-profile/api/v1.0/accounts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user-profile",
+								"api",
+								"v1.0",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account Inquiry",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account_no\": \"000000001002\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user-profile/api/v1.0/accounts/inquiry",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user-profile",
+								"api",
+								"v1.0",
+								"accounts",
+								"inquiry"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account Statement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account_no\": \"000000001001\",\r\n    \"page_number\": 0,\r\n    \"page_size\": 20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user-profile/api/v1.0/accounts/statement",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user-profile",
+								"api",
+								"v1.0",
+								"accounts",
+								"statement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account Statement  Download",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account_no\": \"000000001001\",\r\n    \"period\": \"CUSTOM\",\r\n    \"from_date\": \"29-Mar-2025\",\r\n    \"to_date\": \"31-Mar-2025\",\r\n    \"file_type\": \"PDF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user-profile/api/v1.0/accounts/statement/download",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user-profile",
+								"api",
+								"v1.0",
+								"accounts",
+								"statement",
+								"download"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transfer",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson = pm.response.json();\r",
+									"pm.globals.set(\"payment_id\", responseJson.data.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"service_id\": \"transfer_within\",\r\n    \"sender_account_no\": \"000000001001\",\r\n    \"receiver_account_no\": \"000000001002\",\r\n    \"amount\": 1.69,\r\n    \"currency\": \"USD\",\r\n    \"purpose\": \"Family\",\r\n    \"remarks\": \"test\",\r\n    \"channel\": \"INTERNAL\",\r\n    \"additional_ref\": {\r\n        \"key1\": \"value1\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payment-service/api/v1.0/payments/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payment-service",
+								"api",
+								"v1.0",
+								"payments",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Confirm",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							},
+							{
+								"key": "TPIN",
+								"value": "HaytI3OydBDl5gFofb7fNJL/KdzxnroelfsrFach3q8Tf7EMQFUvgp+hMji9asfcbsmlSDv9I3jlzkFGQhlD6zeJWGVxhn7OoOh+EbHWf7AsNS9smAPqmXBm4zUYgpizTCrwCnhW734ST0o2lz92DySTeoruhYc+QZpCiLw8CU30CuZhd9dcGrQFAobp/S/OZZEd9lNMint7h/9ZnSNFEaxc103xqJezo2xn2IjkFtGr+PRsgYe9ejSk5qSu1PFvLYszm5rosR6qWmmNyweNJlu5Bdvtp0nUnoZFpXSXUNwCC8l6KfABFHmZe6TVEWuFw1TrR9/iY/9cl0khKwxD0mxdcelFbS2sewQvXBTXDhYKQ1dxYxQqxmcxOxW6MrajQXdNfnx4TQp/tAQHsYxauOWUtW4a83WoXND0rd99YopqPJsorSmGlwa4LBoiIz0vYrviM6LIruXaUVQh4MpdA7fIeqHPpiHRHOG5EqsQzqMgRecLkzSOzcx3mkNFWPwRbgPe3ZzIQCS2xE/YWlvItB8N7HTGEUehuJa7p/7qwPmyuE0euhLWO5juHrC+jPR9GRiTpCGUkYg/K1tA7XPjqbu6lLGUmSbj+LbPrkKmohpJpvujCdgxUOJH7qx4pa9mpNvXCvJfpPYPPOpDcayIxhViEUAbKmZRn0WoMpIDCJ8=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{payment_id}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payment-service/api/v1.0/payments/confirm",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payment-service",
+								"api",
+								"v1.0",
+								"payments",
+								"confirm"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gift Transfer",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJson = pm.response.json();\r",
+									"pm.globals.set(\"gift_code\", responseJson.data.gift_code);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							},
+							{
+								"key": "TPIN",
+								"value": "HaytI3OydBDl5gFofb7fNJL/KdzxnroelfsrFach3q8Tf7EMQFUvgp+hMji9asfcbsmlSDv9I3jlzkFGQhlD6zeJWGVxhn7OoOh+EbHWf7AsNS9smAPqmXBm4zUYgpizTCrwCnhW734ST0o2lz92DySTeoruhYc+QZpCiLw8CU30CuZhd9dcGrQFAobp/S/OZZEd9lNMint7h/9ZnSNFEaxc103xqJezo2xn2IjkFtGr+PRsgYe9ejSk5qSu1PFvLYszm5rosR6qWmmNyweNJlu5Bdvtp0nUnoZFpXSXUNwCC8l6KfABFHmZe6TVEWuFw1TrR9/iY/9cl0khKwxD0mxdcelFbS2sewQvXBTXDhYKQ1dxYxQqxmcxOxW6MrajQXdNfnx4TQp/tAQHsYxauOWUtW4a83WoXND0rd99YopqPJsorSmGlwa4LBoiIz0vYrviM6LIruXaUVQh4MpdA7fIeqHPpiHRHOG5EqsQzqMgRecLkzSOzcx3mkNFWPwRbgPe3ZzIQCS2xE/YWlvItB8N7HTGEUehuJa7p/7qwPmyuE0euhLWO5juHrC+jPR9GRiTpCGUkYg/K1tA7XPjqbu6lLGUmSbj+LbPrkKmohpJpvujCdgxUOJH7qx4pa9mpNvXCvJfpPYPPOpDcayIxhViEUAbKmZRn0WoMpIDCJ8=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"sender_account_no\": \"000000001001\",\r\n    \"amount\": 1.68,\r\n    \"currency\": \"USD\",\r\n    \"purpose\": \"Birthday Gift\",\r\n    \"remarks\": \"Enjoy your gift!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payment-service/api/v1.0/gift-transfer/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payment-service",
+								"api",
+								"v1.0",
+								"gift-transfer",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Claim",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "client_secret",
+								"value": "{{client_secret}}",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text"
+							},
+							{
+								"key": "device_id",
+								"value": "12345",
+								"type": "text"
+							},
+							{
+								"key": "client_req_timestamp",
+								"value": "2022-01-01T12:12:12+07:00",
+								"type": "text"
+							},
+							{
+								"key": "app_version",
+								"value": "1.0.1",
+								"type": "text"
+							},
+							{
+								"key": "device_info",
+								"value": "{\"device_model\":\"A3\",\"branch_code\":\"001\"}",
+								"type": "text"
+							},
+							{
+								"key": "TPIN",
+								"value": "HaytI3OydBDl5gFofb7fNJL/KdzxnroelfsrFach3q8Tf7EMQFUvgp+hMji9asfcbsmlSDv9I3jlzkFGQhlD6zeJWGVxhn7OoOh+EbHWf7AsNS9smAPqmXBm4zUYgpizTCrwCnhW734ST0o2lz92DySTeoruhYc+QZpCiLw8CU30CuZhd9dcGrQFAobp/S/OZZEd9lNMint7h/9ZnSNFEaxc103xqJezo2xn2IjkFtGr+PRsgYe9ejSk5qSu1PFvLYszm5rosR6qWmmNyweNJlu5Bdvtp0nUnoZFpXSXUNwCC8l6KfABFHmZe6TVEWuFw1TrR9/iY/9cl0khKwxD0mxdcelFbS2sewQvXBTXDhYKQ1dxYxQqxmcxOxW6MrajQXdNfnx4TQp/tAQHsYxauOWUtW4a83WoXND0rd99YopqPJsorSmGlwa4LBoiIz0vYrviM6LIruXaUVQh4MpdA7fIeqHPpiHRHOG5EqsQzqMgRecLkzSOzcx3mkNFWPwRbgPe3ZzIQCS2xE/YWlvItB8N7HTGEUehuJa7p/7qwPmyuE0euhLWO5juHrC+jPR9GRiTpCGUkYg/K1tA7XPjqbu6lLGUmSbj+LbPrkKmohpJpvujCdgxUOJH7qx4pa9mpNvXCvJfpPYPPOpDcayIxhViEUAbKmZRn0WoMpIDCJ8=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"gift_code\": \"{{gift_code}}\",\r\n    \"receiver_account_no\": \"000000001002\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payment-service/api/v1.0/gift-transfer/claim",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payment-service",
+								"api",
+								"v1.0",
+								"gift-transfer",
+								"claim"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:9090",
+			"type": "string"
+		},
+		{
+			"key": "client_id",
+			"value": "12345",
+			"type": "string"
+		},
+		{
+			"key": "client_secret",
+			"value": "12345_secret",
+			"type": "string"
+		},
+		{
+			"key": "x-api-key",
+			"value": "12345_api_key",
+			"type": "string"
+		}
+	]
+}

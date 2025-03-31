@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01-insert-services-data
+      author: seakheng
+      changes:
+        - sqlFile:
+            path: db/changelog/data/service.sql
+            relativeToChangelogFile: false

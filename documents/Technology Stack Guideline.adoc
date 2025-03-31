@@ -1,0 +1,115 @@
+= Technology Stack Guideline
+
+== 1. Spring Boot (Backend Services)
+
+- **Version**: Java 21, Spring Boot 3.4.4
+- **Web Framework**: Spring Web for creating RESTful APIs.
+- **Data Access**: Spring Data JPA (with Hibernate).
+- **Security**: Spring Security for authentication and authorization.
+
+== 2. Spring Cloud Gateway
+
+- **Version**: Spring Cloud Gateway 3.4.4 (compatible with Spring Boot 3.x)
+- **Route Handling**: Use Spring Cloud Gateway for dynamic routing between microservices.
+- **Filters**: Apply filters for pre- and post-processing, such as authentication, logging, or rate limiting.
+- **API Gateway**: The main entry point, routing requests to microservices and handling cross-cutting concerns like authentication, rate limiting, and monitoring.
+- **Gateway Filters**: Use filters like authentication, logging, and metrics.
+
+== 3. Spring Security (For OAuth2 & JWT)
+
+- **OAuth2 & JWT Authentication**: Implement OAuth 2.0 token-based authentication using Spring Security.
+- **JWT Token**: Use JWT for stateless authentication.
+- **OAuth2 Flows**: Implement authentication flows like password flow, client credentials, etc.
+
+== 4. Database
+
+- **Relational Database**: Spring Data JPA with an RDBMS like PostgreSQL, or H2 for persistence.
+- **Database Migration**: Liquibase for managing database schema changes in a version-controlled manner.
+
+== 5. HTTP Requests
+- **WebClient (Asynchronous HTTP Requests)**: WebClient is a non-blocking, reactive alternative to RestTemplate for making HTTP requests.
+- **Spring Cloud Feign (Declarative REST Clients)**: Spring Cloud Feign provides a declarative approach to REST API calls by creating interfaces with annotations to describe HTTP requests.
+
+== 6. Message Queues & Event-Driven Architecture
+- **BlockingQueue Usage**: A `BlockingQueue` is a thread-safe data structure that allows for efficient management of producer-consumer patterns in multi-threaded in-memory applications.
+- **Message Brokers**: Use Spring Cloud Stream to integrate message brokers like RabbitMQ, Kafka, or ActiveMQ.
+
+== 7. Monitoring and Observability
+
+- **Spring Actuator**: Use Spring Boot Actuator for production-ready features like health checks, metrics, and insights.
+- **Prometheus and Grafana**: Collect and visualize metrics with Prometheus and Grafana.
+- **Distributed Tracing**: Integrate Spring Cloud Sleuth and Zipkin for tracing requests across microservices.
+
+== 8. Containerization
+
+- **Docker**: Package Spring Boot apps in Docker containers for easier deployment and scaling.
+- Use multi-stage builds to create lightweight containers.
+- **Docker Compose**: Use `docker-compose.yml` to define and manage multi-container setups.
+
+== 9. Error Handling & Logging
+
+- **Global Exception Handling**: Use `@ControllerAdvice` for handling exceptions globally.
+- **Logging**: Use SLF4J with Logback for logging and integrate with ELK stack (Elasticsearch, Logstash, Kibana) for centralized logging.
+
+== 10. Cache Layer (Optional)
+
+- **Spring Cache**: Use Spring Cache with Redis or an in-memory cache for faster response times.
+
+== Example Dependencies
+
+```xml
+<dependencies>
+    <!-- Spring Boot Web -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Spring Cloud Gateway -->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-gateway</artifactId>
+    </dependency>
+
+    <!-- Spring Security for OAuth2 JWT -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-oauth2-client</artifactId>
+    </dependency>
+
+    <!-- Spring Data JPA for Database -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+
+    <!-- Spring Boot Actuator -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <!-- Spring Cloud Sleuth for Distributed Tracing -->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-sleuth</artifactId>
+    </dependency>
+
+    <!-- Spring Cloud Stream for Event-Driven Architecture -->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+    </dependency>
+
+    <!-- Prometheus for Monitoring -->
+    <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-registry-prometheus</artifactId>
+    </dependency>
+
+    <!-- Spring Boot for Docker -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+</dependencies>

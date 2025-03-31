@@ -1,0 +1,15 @@
+@startuml
+actor User
+
+participant "API Gateway" as SG
+participant "User Profile" as UPS
+participant "Payment Service" as PS
+
+User -> SG : Sends Request
+SG -> UPS : Route to User Profile
+SG -> PS : Route to Payment Service
+UPS -> PS : Pass User/Account (if needed)
+PS -> SG : Send Response
+SG -> User : Return Response
+
+@enduml

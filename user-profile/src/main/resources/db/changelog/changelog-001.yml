@@ -1,0 +1,146 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-user_auth_details-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: user_auth_details
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: cif
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: mobile_number
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(255)
+              - column:
+                  name: is_enable_biometric
+                  type: boolean
+              - column:
+                  name: biometric_token
+                  type: varchar(255)
+              - column:
+                  name: key_metric
+                  type: varchar(255)
+              - column:
+                  name: remark
+                  type: varchar(255)
+              - column:
+                  name: is_reactivate
+                  type: boolean
+                  defaultValueBoolean: false
+              - column:
+                  name: blocked_by
+                  type: varchar(255)
+              - column:
+                  name: profile_id
+                  type: varchar(255)
+              - column:
+                  name: full_name
+                  type: varchar(255)
+              - column:
+                  name: gender
+                  type: varchar(10)
+              - column:
+                  name: dob
+                  type: date
+              - column:
+                  name: address
+                  type: varchar(255)
+              - column:
+                  name: last_login_date
+                  type: datetime
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+  - changeSet:
+      id: 002-create-user_accounts-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: user_accounts
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: cif
+                  type: varchar(255)
+              - column:
+                  name: account_no
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(10)
+              - column:
+                  name: balance
+                  type: decimal(19,2)
+                  defaultValueNumeric: 0.00
+              - column:
+                  name: account_name
+                  type: varchar(255)
+              - column:
+                  name: is_hide
+                  type: boolean
+                  defaultValueBoolean: false
+              - column:
+                  name: description
+                  type: varchar(500)
+              - column:
+                  name: is_default
+                  type: boolean
+                  defaultValueBoolean: false
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)

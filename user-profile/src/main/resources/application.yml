@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: local
+  cloud:
+    config:
+      enabled: true
+      label: latest
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  liquibase:
+    enabled: true
+
+server:
+  servlet:
+    context-path: /user-profile
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,beans,refresh

@@ -1,0 +1,67 @@
+databaseChangeLog:
+  - changeSet:
+      id: 00311111-create-account_transactions-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: account_transactions
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: reference_number
+                  type: varchar(50)
+              - column:
+                  name: external_reference
+                  type: varchar(50)
+              - column:
+                  name: cif
+                  type: varchar(10)
+              - column:
+                  name: account_no
+                  type: varchar(30)
+              - column:
+                  name: currency
+                  type: varchar(5)
+              - column:
+                  name: amount
+                  type: decimal(19,2)
+              - column:
+                  name: drcr_ind
+                  type: varchar(10)
+              - column:
+                  name: txn_type
+                  type: varchar(50)
+              - column:
+                  name: ending_balance
+                  type: decimal(19,2)
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+  - changeSet:
+      id: 0031111-create-account_transactions-uq
+      author: seakheng
+      changes:
+        - addUniqueConstraint:
+            tableName: account_transactions
+            columnNames: external_reference, account_no
+            constraintName: uq_external_reference_account

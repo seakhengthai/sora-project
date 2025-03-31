@@ -1,0 +1,49 @@
+@startuml
+actor Client
+
+participant "API Gateway" as Gateway
+participant "User Profile Service" as UserProfile
+participant "Payment Service" as Payment
+
+Client -> Gateway : Initiate Gift Transfer Request\n(Headers, Gift Details)
+Gateway -> Gateway : Validate Client Credentials\n(client_id, client_secret, Authorization token)
+alt Valid Client Credentials
+    Gateway -> UserProfile : Verify TPIN\n(TPIN from Client)
+    UserProfile -> UserProfile : Validate TPIN\n(against stored user data)
+    alt Valid TPIN
+        Gateway -> Payment : Route to Payment Service\n(Gift Create)
+        Payment -> Payment : Validate Amount\n(against daily limit, amount)
+        alt Valid Amount
+            Payment -> Payment : Step 1: Create Gift\n(Generate Gift Code)
+            Payment -> Gateway : Return Gift Code
+            Gateway -> Client : Return Gift Code\n(Success)
+        else Invalid Amount
+            Payment -> Gateway : Return Error\n(Invalid Amount)
+            Gateway -> Client : Return Error\n(Invalid Amount)
+        end
+    else Invalid TPIN
+        Gateway -> Client : Return Error\n(Invalid TPIN)
+    end
+
+    Client -> Gateway : Initiate Claim Request\n(Headers, Gift Code)
+    Gateway -> Gateway : Validate Client Credentials\n(client_id, client_secret, Authorization token)
+    alt Valid Client Credentials
+        Gateway -> Payment : Route to Payment Service\n(Gift Claim)
+        Payment -> Payment : Validate Gift Code\n(Check Expiry Date)
+        alt Valid Gift Code
+            Payment -> Payment : Step 2: Fund Transfer\n(Create and Confirm Process)
+            Payment -> Payment : Debit from Sender Account\n(Transfer Fund)
+            Payment -> Payment : Credit to Receiver Account\n(Complete Transfer)
+            Payment -> Gateway : Return Success\n(Transfer Completed)
+            Gateway -> Client : Return Success Response\n(Gift Claimed)
+        else Invalid or Expired Gift Code
+            Payment -> Gateway : Return Error\n(Invalid or Expired Gift Code)
+            Gateway -> Client : Return Error\n(Invalid or Expired Gift Code)
+        end
+    else Invalid Client Credentials
+        Gateway -> Client : Return Error\n(Invalid Client Credentials)
+    end
+else Invalid Client Credentials
+    Gateway -> Client : Return Error\n(Invalid Client Credentials)
+end
+@enduml

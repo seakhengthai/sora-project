@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 011-insert-client-data
+      author: seakheng
+      changes:
+        - sqlFile:
+            path: db/changelog/data/client.sql
+            relativeToChangelogFile: false

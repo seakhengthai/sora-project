@@ -1,0 +1,686 @@
+= Accounts API Documentation
+:toc: left
+:toclevels: 3
+:sectnums:
+:imagesdir: images
+
+== List Accounts
+
+=== Overview
+
+This API allows clients to retrieve account information for a given customer.
+
+=== Endpoint
+
+[cols="1,3"]
+|===
+|Method |GET
+|URL |http://localhost:9090/user-profile/api/v1.0/accounts
+|===
+
+=== Headers
+
+[cols="2,2,3"]
+|===
+|Header |Required |Description
+
+|content-type
+|Yes
+|Must be set to `application/json`
+
+|client_id
+|Yes
+|Client identification, e.g., `12345`
+
+|client_secret
+|Yes
+|Client secret key, e.g., `12345_secret`
+
+|x-api-key
+|Yes
+|API key for authentication, e.g., `12345_api_key`
+
+|device_id
+|Yes
+|Unique identifier for the device, e.g., `12345`
+
+|client_req_timestamp
+|Yes
+|Client request timestamp in ISO 8601 format, e.g., `2022-01-01T12:12:12+07:00`
+
+|app_version
+|Yes
+|Version of the client application, e.g., `1.0.1`
+
+|device_info
+|Yes
+|JSON string containing device information, e.g., `{"device_model":"A3","branch_code":"001"}`
+
+|Authorization
+|Yes
+|Bearer token for user authentication, e.g., `Bearer eyJhbGciOiJSUzI1NiJ9...`
+|===
+
+=== Authentication
+
+This API requires both API key and OAuth 2.0 Bearer token authentication:
+
+1. API key authentication via `x-api-key` header
+2. OAuth 2.0 Bearer token in the `Authorization` header
+
+=== Response Format
+
+==== Success Response
+
+[source,json]
+----
+{
+    "code": "S0001",
+    "message": "Success.",
+    "title": null,
+    "trace_id": "67ea484f04bdfc1ead2a07def4f0aea3",
+    "data": [
+        {
+            "cif": "000000001",
+            "account_no": "000000001001",
+            "currency": "USD",
+            "balance": 49756088.13,
+            "account_name": "Saving Account",
+            "is_hide": false,
+            "description": null,
+            "is_default": true
+        },
+        {
+            "cif": "000000001",
+            "account_no": "000000001002",
+            "currency": "KHR",
+            "balance": 40700.00,
+            "account_name": "Saving Account",
+            "is_hide": false,
+            "description": null,
+            "is_default": false
+        }
+    ],
+    "message_kh": null
+}
+----
+
+==== Response Fields
+
+[cols="2,1,4"]
+|===
+|Field |Type |Description
+
+|code
+|String
+|Response code, e.g., `S0001` for success
+
+|message
+|String
+|Response message, e.g., `Success.`
+
+|title
+|String
+|Optional title for the response (null if not provided)
+
+|trace_id
+|String
+|Unique identifier for the request for tracing purposes
+
+|data
+|Array
+|Array of account objects
+
+|message_kh
+|String
+|Optional localized message in Khmer (null if not provided)
+|===
+
+=== Account Object
+
+[cols="2,1,4"]
+|===
+|Field |Type |Description
+
+|cif
+|String
+|Customer Identification File number
+
+|account_no
+|String
+|Account number
+
+|currency
+|String
+|Currency code (e.g., USD, KHR)
+
+|balance
+|Number
+|Current account balance
+
+|account_name
+|String
+|Name of the account type
+
+|is_hide
+|Boolean
+|Whether the account is hidden in UI
+
+|description
+|String
+|Optional description of the account (null if not provided)
+
+|is_default
+|Boolean
+|Whether this is the default account for the customer
+|===
+
+
+=== Example Request
+
+[source,bash]
+----
+curl --location 'http://localhost:9090/user-profile/api/v1.0/accounts' \
+--header 'content-type: application/json' \
+--header 'client_id: 12345' \
+--header 'client_secret: 12345_secret' \
+--header 'x-api-key: 12345_api_key' \
+--header 'device_id: 12345' \
+--header 'client_req_timestamp: 2022-01-01T12:12:12+07:00' \
+--header 'app_version: 1.0.1' \
+--header 'device_info: {"device_model":"A3","branch_code":"001"}' \
+--header 'Authorization: Bearer access_token'
+----
+
+
+== Account Statement
+
+This API allows clients to retrieve transaction statements for a specified account with pagination support.
+
+=== Endpoint
+
+[cols="1,3"]
+|===
+|Method |POST
+|URL |http://localhost:9090/user-profile/api/v1.0/accounts/statement
+|===
+
+=== Headers
+
+[cols="2,2,3"]
+|===
+|Header |Required |Description
+
+|content-type
+|Yes
+|Must be set to `application/json`
+
+|client_id
+|Yes
+|Client identification, e.g., `12345`
+
+|client_secret
+|Yes
+|Client secret key, e.g., `12345_secret`
+
+|x-api-key
+|Yes
+|API key for authentication, e.g., `12345_api_key`
+
+|device_id
+|Yes
+|Unique identifier for the device, e.g., `12345`
+
+|client_req_timestamp
+|Yes
+|Client request timestamp in ISO 8601 format, e.g., `2022-01-01T12:12:12+07:00`
+
+|app_version
+|Yes
+|Version of the client application, e.g., `1.0.1`
+
+|device_info
+|Yes
+|JSON string containing device information, e.g., `{"device_model":"A3","branch_code":"001"}`
+
+|Authorization
+|Yes
+|Bearer token for user authentication, e.g., `Bearer eyJhbGciOiJSUzI1NiJ9...`
+|===
+
+=== Request Body
+
+[source,json]
+----
+{
+    "account_no": "000000001001",
+    "page_number": 0,
+    "page_size": 2
+}
+----
+
+==== Request Parameters
+
+[cols="2,1,1,4"]
+|===
+|Parameter |Type |Required |Description
+
+|account_no
+|String
+|Yes
+|Account number to retrieve statements for
+
+|page_number
+|Integer
+|Yes
+|Zero-based page number for pagination
+
+|page_size
+|Integer
+|Yes
+|Number of records per page
+|===
+
+=== Authentication
+
+This API requires both API key and OAuth 2.0 Bearer token authentication:
+
+1. API key authentication via `x-api-key` header
+2. OAuth 2.0 Bearer token in the `Authorization` header
+
+=== Response Format
+
+==== Success Response
+
+[source,json]
+----
+{
+    "code": "S0001",
+    "message": "Success.",
+    "title": null,
+    "trace_id": "67ea66fc417bd3b4ddb3fcc0409ddfb8",
+    "data": {
+        "page_response": {
+            "page_number": 0,
+            "page_size": 2,
+            "total_elements": 17,
+            "total_pages": 9
+        },
+        "content": [
+            {
+                "id": 73,
+                "reference_number": "dca866e8f1cf43ab",
+                "external_reference": "f842a553038f4b5a",
+                "account_no": "000000001001",
+                "currency": "USD",
+                "amount": 1.68,
+                "drcr_ind": "DEBIT",
+                "txn_type": "GIFT",
+                "txn_date": "2025-03-31T07:18:53.817+00:00"
+            },
+            {
+                "id": 71,
+                "reference_number": "9f6c52c666b14fb4",
+                "external_reference": "988aec94d9d3436e",
+                "account_no": "000000001001",
+                "currency": "USD",
+                "amount": 1.69,
+                "drcr_ind": "DEBIT",
+                "txn_type": "WITHIN",
+                "txn_date": "2025-03-31T06:15:11.009+00:00"
+            }
+        ]
+    },
+    "message_kh": null
+}
+----
+
+==== Response Fields
+
+[cols="2,1,4"]
+|===
+|Field |Type |Description
+
+|code
+|String
+|Response code, e.g., `S0001` for success
+
+|message
+|String
+|Response message, e.g., `Success.`
+
+|title
+|String
+|Optional title for the response (null if not provided)
+
+|trace_id
+|String
+|Unique identifier for the request for tracing purposes
+
+|data
+|Object
+|Container for the response data
+
+|message_kh
+|String
+|Optional localized message in Khmer (null if not provided)
+|===
+
+==== Data Object
+
+[cols="2,1,4"]
+|===
+|Field |Type |Description
+
+|page_response
+|Object
+|Pagination information
+
+|content
+|Array
+|Array of transaction objects
+|===
+
+==== Page Response Object
+
+[cols="2,1,4"]
+|===
+|Field |Type |Description
+
+|page_number
+|Integer
+|Current page number (zero-based)
+
+|page_size
+|Integer
+|Number of records per page
+
+|total_elements
+|Integer
+|Total number of records available
+
+|total_pages
+|Integer
+|Total number of pages available
+|===
+
+==== Transaction Object
+
+[cols="2,1,4"]
+|===
+|Field |Type |Description
+
+|id
+|Integer
+|Unique identifier for the transaction
+
+|reference_number
+|String
+|Internal reference number for the transaction
+
+|external_reference
+|String
+|External reference number for the transaction
+
+|account_no
+|String
+|Account number associated with the transaction
+
+|currency
+|String
+|Currency code of the transaction (e.g., USD)
+
+|amount
+|Number
+|Transaction amount
+
+|drcr_ind
+|String
+|Debit or credit indicator (`DEBIT` or `CREDIT`)
+
+|txn_type
+|String
+|Type of transaction (e.g., `GIFT`, `WITHIN`)
+
+|txn_date
+|String
+|Transaction date and time in ISO 8601 format
+|===
+
+=== Transaction Types
+
+[cols="1,4"]
+|===
+|Type |Description
+
+|GIFT
+|Gift transaction
+
+|WITHIN
+|Internal transfer within the same bank
+
+|OWN
+|Transfer to own account
+|===
+
+=== Example Request
+
+[source,bash]
+----
+curl --location 'http://localhost:9090/user-profile/api/v1.0/accounts/statement' \
+--header 'content-type: application/json' \
+--header 'client_id: 12345' \
+--header 'client_secret: 12345_secret' \
+--header 'x-api-key: 12345_api_key' \
+--header 'device_id: 12345' \
+--header 'client_req_timestamp: 2022-01-01T12:12:12+07:00' \
+--header 'app_version: 1.0.1' \
+--header 'device_info: {"device_model":"A3","branch_code":"001"}' \
+--header 'Authorization: Bearer access_token' \
+--data '{
+    "account_no": "000000001001",
+    "page_number": 0,
+    "page_size": 2
+}'
+----
+
+=== Pagination
+
+The API supports pagination with the following parameters:
+
+* `page_number`: Zero-based page number (starts from 0)
+* `page_size`: Number of records to return per page
+
+The response includes pagination metadata in the `page_response` object, containing:
+
+* `page_number`: Current page number
+* `page_size`: Current page size
+* `total_elements`: Total number of records available
+* `total_pages`: Total number of pages available
+
+To navigate through pages, increment the `page_number` parameter up to `total_pages - 1`.
+
+
+== Download Account Statement
+
+This API allows clients to download account statements for a specified account within a date range in various file formats.
+
+=== Endpoint
+
+[cols="1,3"]
+|===
+|Method |POST
+|URL |http://localhost:9090/user-profile/api/v1.0/accounts/statement/download
+|===
+
+=== Headers
+
+[cols="2,2,3"]
+|===
+|Header |Required |Description
+
+|content-type
+|Yes
+|Must be set to `application/json`
+
+|client_id
+|Yes
+|Client identification, e.g., `12345`
+
+|client_secret
+|Yes
+|Client secret key, e.g., `12345_secret`
+
+|x-api-key
+|Yes
+|API key for authentication, e.g., `12345_api_key`
+
+|device_id
+|Yes
+|Unique identifier for the device, e.g., `12345`
+
+|client_req_timestamp
+|Yes
+|Client request timestamp in ISO 8601 format, e.g., `2022-01-01T12:12:12+07:00`
+
+|app_version
+|Yes
+|Version of the client application, e.g., `1.0.1`
+
+|device_info
+|Yes
+|JSON string containing device information, e.g., `{"device_model":"A3","branch_code":"001"}`
+
+|Authorization
+|Yes
+|Bearer token for user authentication, e.g., `Bearer eyJhbGciOiJSUzI1NiJ9...`
+|===
+
+=== Request Body
+
+[source,json]
+----
+{
+    "account_no": "000000001001",
+    "period": "CUSTOM",
+    "from_date": "29-Mar-2025",
+    "to_date": "31-Mar-2025",
+    "file_type": "PDF"
+}
+----
+
+==== Request Parameters
+
+[cols="2,1,1,4"]
+|===
+|Parameter |Type |Required |Description
+
+|account_no
+|String
+|Yes
+|Account number to download statements for
+
+|period
+|String
+|Yes
+|Predefined period `THIS_MONTH`, `LAST_1_MONTH` to `LAST_6_MONTH` or `CUSTOM` for a custom date range. Valid values: `LAST_MONTH`, `LAST_3_MONTHS`, `LAST_6_MONTHS`, `LAST_12_MONTHS`, `CUSTOM`
+
+|from_date
+|String
+|Required if period is `CUSTOM`
+|Start date for the custom period in format `DD-MMM-YYYY` (e.g., `29-Mar-2025`)
+
+|to_date
+|String
+|Required if period is `CUSTOM`
+|End date for the custom period in format `DD-MMM-YYYY` (e.g., `31-Mar-2025`)
+
+|file_type
+|String
+|Yes
+|Type of file to download. Valid values: `PDF`, `EXCEL`
+|===
+
+=== Authentication
+
+This API requires both API key and OAuth 2.0 Bearer token authentication:
+
+1. API key authentication via `x-api-key` header
+2. OAuth 2.0 Bearer token in the `Authorization` header
+
+=== Response Format
+
+The API returns a binary file of the requested type (PDF, CSV, or EXCEL) as the response body. The content type of the response will vary based on the requested file type.
+
+==== Response Headers
+
+[cols="2,4"]
+|===
+|Header |Description
+
+|Content-Type
+|The mime type of the returned file:
+- `application/pdf` for PDF files
+- `text/csv` for CSV files
+- `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` for Excel files
+
+|Content-Disposition
+|Typically set to `attachment; filename="statement_<account_no>_<from_date>_<to_date>.<extension>"` where the extension is based on the requested file type
+|===
+
+=== File Types
+
+[cols="1,4"]
+|===
+|File Type |Description
+
+|PDF
+|Portable Document Format, suitable for printing
+
+|EXCEL
+|Microsoft Excel format, suitable for analysis and reporting
+|===
+
+=== Example Request
+
+[source,bash]
+----
+curl --location 'http://localhost:9090/user-profile/api/v1.0/accounts/statement/download' \
+--header 'content-type: application/json' \
+--header 'client_id: 12345' \
+--header 'client_secret: 12345_secret' \
+--header 'x-api-key: 12345_api_key' \
+--header 'device_id: 12345' \
+--header 'client_req_timestamp: 2022-01-01T12:12:12+07:00' \
+--header 'app_version: 1.0.1' \
+--header 'device_info: {"device_model":"A3","branch_code":"001"}' \
+--header 'Authorization: Bearer access_token' \
+--data '{
+    "account_no": "000000001001",
+    "period": "CUSTOM",
+    "from_date": "29-Mar-2025",
+    "to_date": "31-Mar-2025",
+    "file_type": "PDF"
+}' \
+--output statement.pdf
+----
+
+=== Date Format
+
+The date format used in this API is:
+
+* `DD-MMM-YYYY` where:
+** `DD` is the day of the month with leading zeros (01-31)
+** `MMM` is the three-letter abbreviation of the month (Jan, Feb, Mar, etc.)
+** `YYYY` is the four-digit year
+
+Examples:
+* `01-Jan-2025`
+* `15-Feb-2025`
+* `31-Mar-2025`
+
+=== Limitations
+
+1. The maximum date range allowed is 12 months
+2. The statement will include all transactions within the specified date range
+3. File size may be limited based on the server configuration

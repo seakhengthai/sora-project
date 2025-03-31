@@ -1,0 +1,53 @@
+@startuml
+actor Client
+
+participant "API Gateway" as Gateway
+participant "User Profile" as UserProfile
+participant "Payment Service" as Payment
+
+Client -> Gateway : Initiate Create Transfer Request\n(Headers, Payload)
+Gateway -> Gateway : Validate Client Credentials\n(client_id, client_secret, Authorization token)
+alt Valid Client Credentials
+    Gateway -> Payment : Route to Payment Service (Create step)\n(Payment Request Data)
+    Payment -> Payment : Step 1: Validate Transfer\n(Amount, Daily Limit, Balance)
+    alt Valid Transfer Data
+        Payment -> Payment : Step 2: Create Payment Record\n(Initial Payment Data)
+        Payment -> Gateway : Return Payment Created\n(Transaction ID)
+        Gateway -> Client : Return Success Response\n(Payment Created)
+    else Invalid Transfer Data
+        Payment -> Gateway : Return Error\n(Invalid Data)
+        Gateway -> Client : Return Error\n(Invalid Transfer Data)
+    end
+else Invalid Client Credentials
+    Gateway -> Client : Return Error\n(Invalid Client Credentials)
+end
+
+Client -> Gateway : Initiate Confirm Transfer Request\n(Headers, Transaction ID, TPIN)
+Gateway -> Gateway : Validate Client Credentials\n(client_id, client_secret, Authorization token)
+alt Valid Client Credentials
+    Gateway -> UserProfile : Verify TPIN\n(TPIN from Client)
+    UserProfile -> UserProfile : Validate TPIN\n(against stored data)
+    alt Valid TPIN
+        Gateway -> Payment : Route to Payment Service (Confirm step)\n(Transaction ID)
+        Payment -> Payment : Step 1: Process Confirmation\n(Complete the Transfer)
+        Payment -> Payment : Step 2: Debit/Credit Account\n(Call to User Profile Service)
+        Payment -> Payment : Step 3: Queue the Payment\n(Queue for retry if fail)
+        alt Payment Success
+            Payment -> Gateway : Return Payment Success\n(Transfer Completed)
+            Gateway -> Client : Return Success Response\n(Transfer Completed)
+        else Payment Fail (Retry Attempts)
+            Payment -> Payment : Retry 1
+            Payment -> Payment : Retry 2
+            Payment -> Payment : Retry 3
+            alt After 3 Failures
+                Payment -> Gateway : Return Error\n(Payment Failed)
+                Gateway -> Client : Return Error\n(Payment Failed After 3 Retries)
+            end
+        end
+    else Invalid TPIN
+        Gateway -> Client : Return Error\n(Invalid TPIN)
+    end
+else Invalid Client Credentials
+    Gateway -> Client : Return Error\n(Invalid Client Credentials)
+end
+@enduml

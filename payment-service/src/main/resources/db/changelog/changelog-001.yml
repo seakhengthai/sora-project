@@ -1,0 +1,353 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-services-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: services
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(50)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: service_id
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: currency
+                  type: VARCHAR(10)
+              - column:
+                  name: is_has_fee
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+              - column:
+                  name: txn_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: service_commands
+                  type: VARCHAR(255)
+              - column:
+                  name: channel
+                  type: VARCHAR(255)
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+  - changeSet:
+      id: 1-create-fee-tiers-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: fee_tiers
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: service_id
+                  type: VARCHAR(50)
+              - column:
+                  name: currency
+                  type: VARCHAR(3)
+              - column:
+                  name: from_amount
+                  type: double
+              - column:
+                  name: to_amount
+                  type: double
+              - column:
+                  name: fee
+                  type: double
+              - column:
+                  name: rate
+                  type: double
+              - column:
+                  name: min
+                  type: double
+              - column:
+                  name: max
+                  type: double
+              - column:
+                  name: type
+                  type: VARCHAR(20)
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+  - changeSet:
+      id: 10111-create-tx-orders-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: tx_orders
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(50)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: transaction_id
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_command
+                  type: VARCHAR(50)
+              - column:
+                  name: service_id
+                  type: VARCHAR(50)
+              - column:
+                  name: amount
+                  type: DECIMAL(18,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: equivalent_amount
+                  type: DECIMAL(18,2)
+              - column:
+                  name: exchange_rate
+                  type: double
+              - column:
+                  name: fee_tier_id
+                  type: VARCHAR(50)
+              - column:
+                  name: fee
+                  type: double
+              - column:
+                  name: currency
+                  type: VARCHAR(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_status
+                  type: VARCHAR(50)
+              - column:
+                  name: purpose
+                  type: VARCHAR(255)
+              - column:
+                  name: remarks
+                  type: VARCHAR(255)
+              - column:
+                  name: channel
+                  type: VARCHAR(100)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+  - changeSet:
+      id: 1-create-payment-users-table
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: payment_users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: tx_order_id
+                  type: VARCHAR(50)
+              - column:
+                  name: cif
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_number
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_ccy
+                  type: VARCHAR(3)
+              - column:
+                  name: user_type
+                  type: VARCHAR(10)
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+
+  - changeSet:
+      id: 201-create-tx-order-additional-ref
+      author: john
+      changes:
+        - createTable:
+            tableName: tx_order_additional_ref
+            columns:
+              - column:
+                  name: tx_order_id
+                  type: VARCHAR(50)
+              - column:
+                  name: key
+                  type: VARCHAR(50)
+              - column:
+                  name: value
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 0011-create-gift-transfers
+      author: seakheng
+      changes:
+        - createTable:
+            tableName: gift_transfers
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: transaction_id
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: cif
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sender_account_no
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: gift_code
+                  type: VARCHAR(30)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: amount
+                  type: DECIMAL(18,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: VARCHAR(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expires_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: purpose
+                  type: VARCHAR(255)
+              - column:
+                  name: remarks
+                  type: VARCHAR(255)
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+              - column:
+                  name: modified_at
+                  type: datetime
+              - column:
+                  name: created_by
+                  type: varchar(100)
+              - column:
+                  name: modified_by
+                  type: varchar(100)
+        - createIndex:
+            indexName: idx_gift_code_1
+            tableName: gift_transfers
+            columns:
+              - column:
+                  name: gift_code
