@@ -58,7 +58,8 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 ----
 
 == `docker-compose.yml` Configuration
-[source, yaml]
+
+[source,yaml]
 ----
 version: '3.8'
 
@@ -83,7 +84,7 @@ services:
       SPRING_PROFILES_ACTIVE: docker
 
   payment-service:
-    build: ./payment-service
+    build: ../payment-service
     container_name: payment-service
     ports:
       - "9092:9092"
